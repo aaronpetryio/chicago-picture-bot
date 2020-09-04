@@ -9,10 +9,14 @@ Created on Wed Aug 26 21:09:25 2020
 import json
 import shutil
 import sys
-
+import boto3
 import requests
 
 import settings
+
+# intialize connection to S3 resources
+s3 = boto3.resource('s3')
+s3_client = boto3.client('s3', 'us-west-2')
 
 def get_json():
     """ 
@@ -76,6 +80,29 @@ def download_images(links):
 
         with open(str(file_location), 'wb') as outfile:
                 shutil.copyfileobj(response.raw, outfile)
-    
-download_images(get_image_links(get_json()))    
+                
+def upload_images_to_s3(directory):
+    """
+    Upload images to S3 bucket if they end with png, jpg, or jpeg
+    """
 
+    for f in directory.iterdir():
+        if str(f).endswith(('.png', '.jpg', '.jpeg')):
+            full_file_path = str(f.parent) + "/" + str(f.name)
+            file_name = str(f.name)
+            s3_client.upload_file(full_file_path, settings.BASE_BUCKET, file_name)
+            print(f,"put")
+
+
+def upload_json_to_s3(directory):
+    """
+    Upload metadata json to directory
+    """
+
+    for f in directory.iterdir():
+        if str(f).endswith('.json'):
+            full_file_path = str(f.parent) + "/" + str(f.name)
+            file_name  = str(f.name)
+            s3_client.upload_file(full_file_path, settings.BASE_BUCKET, file_name)
+    
+upload_json_to_s3(settings.PICTURE_PATH)
