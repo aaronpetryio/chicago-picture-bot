@@ -7,7 +7,7 @@ Created on Wed Aug 26 20:50:46 2020
 from pathlib import Path
 
 #Pexels
-API_KEY = {'Authorization':'563492ad6f9170000100000123a66e89f37a4bfe836394f9e8efad36'}
+#API_KEY = removed
 PHOTO_BASE_URL = "https://api.pexels.com/v1/"
 SEARCH_URL = "search?query=chicago&per_page=281"
 
@@ -23,10 +23,3 @@ METADATA_FILE = PICTURE_PATH.joinpath(METADATA_FILENAME)
 #AWS location
 BASE_BUCKET = 'chicago-picture-bot'
 
-#AWS credentials
-AWS_ACCESS_KEY_ID = 'AKIAJPRAN2L642A2LVDQ'
-AWS_SECRET_ACCESS_ID = 'wlTa/tyMixa8WqWVn/MDI78zneY3MXv8bLM4aUMh'
-
-#Twitter credentials
-TWITTER_ACCESS_TOKEN = 'Q9c0eadmx9Tly8CzsZ7abAdgp'
-TWITTER_ACCESS_SECRET = '6KcGdiiTPdUrllixZMxcxnvZIT7Y52RgBmGgLLLSSW8Tr9IjEX'

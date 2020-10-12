@@ -85,9 +85,6 @@ def lambda_handler(event, context):
 
         # Try to match URL in filepath to URL in metadata; if it doesn't work, try another one
         for i in range(0, 3):
-                print("here")
-                print(url)
-                print(path)
                 print(url + path)
                 try:
                     x = s3_resource.Bucket(bucket_name).download_file(url, path)
@@ -104,7 +101,6 @@ def lambda_handler(event, context):
                     if e.response['Error']['Code'] == 'ResourceNotFoundException':
                         continue
                 break
-
 
     except TwythonError as e:
         print(e)
