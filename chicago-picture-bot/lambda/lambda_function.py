@@ -33,7 +33,8 @@ def lambda_handler(event, context):
         print(e)
         raise e
 
-    print("Got keys")
+	
+    print(json_data)
 
     indexed_json = defaultdict()
 
@@ -63,10 +64,10 @@ def lambda_handler(event, context):
 
     # Connect to Twitter via Twython
 
-    TWITTER_ACCESS_TOKEN = 'Q9c0eadmx9Tly8CzsZ7abAdgp'
-    TWITTER_ACCESS_SECRET = '6KcGdiiTPdUrllixZMxcxnvZIT7Y52RgBmGgLLLSSW8Tr9IjEX'
-    OAUTH_TOKEN = '1299018493199671297-tcjGzt6jr6xJqcAQRPuuGfn1YlW696'
-    OAUTH_TOKEN_SECRET = 'npOnkMUNJvs8oDZQ9032vIpvNEIwqSA4badiyiVC9SkGm'
+    TWITTER_ACCESS_TOKEN = os.environ['TWITTER_ACCESS_TOKEN']
+    TWITTER_ACCESS_SECRET = os.environ['TWITTER_ACCESS_SECRET']
+    OAUTH_TOKEN = os.environ['OAUTH_TOKEN']
+    OAUTH_TOKEN_SECRET = os.environ['OAUTH_TOKEN_SECRET']
 
     try:
         twitter = Twython(TWITTER_ACCESS_TOKEN, TWITTER_ACCESS_SECRET, OAUTH_TOKEN, OAUTH_TOKEN_SECRET)
@@ -84,6 +85,10 @@ def lambda_handler(event, context):
 
         # Try to match URL in filepath to URL in metadata; if it doesn't work, try another one
         for i in range(0, 3):
+                print("here")
+                print(url)
+                print(path)
+                print(url + path)
                 try:
                     x = s3_resource.Bucket(bucket_name).download_file(url, path)
                     print("file moved to /tmp")
@@ -95,6 +100,7 @@ def lambda_handler(event, context):
                         twitter.update_status(status="Photographer: %s \nFind more from this photographer here: %s" % (photographer, photographer_url),
                                               media_ids=twit_resp['media_id'])
                 except ClientError as e:
+                    print(e)
                     if e.response['Error']['Code'] == 'ResourceNotFoundException':
                         continue
                 break

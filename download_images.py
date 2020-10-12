@@ -58,7 +58,9 @@ def get_image_links(data):
     picture_links=[]
     
     for picture in data:
-        picture_links.append(picture['src']['original'])
+        picture_links.append(picture['src']['medium'])
+        
+    print(picture_links)
         
     return picture_links
     
@@ -105,4 +107,4 @@ def upload_json_to_s3(directory):
             file_name  = str(f.name)
             s3_client.upload_file(full_file_path, settings.BASE_BUCKET, file_name)
     
-upload_json_to_s3(settings.PICTURE_PATH)
+download_images(get_image_links(get_json()))
